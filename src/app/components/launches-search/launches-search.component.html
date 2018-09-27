@@ -1,0 +1,9 @@
+<h1>Búsqueda de lanzamientos</h1>
+
+<div id=launches-search-content>
+  <app-launches-criteria (launchCriterionChange)=onLaunchCriterionChange($event)></app-launches-criteria>
+
+  <h2>Resultado de la búsqueda</h2>
+  <app-launches-counter [filteredLaunches]="filteredLaunches"></app-launches-counter>
+  <app-launches-list [filteredLaunches]="filteredLaunches"></app-launches-list>
+</div>

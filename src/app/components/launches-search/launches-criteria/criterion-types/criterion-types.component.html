@@ -1,0 +1,6 @@
+<select (change)="criterionTypeChange.emit($event.target.value)">
+  <option value="" disabled selected hidden>Selecciona...</option>
+  <option *ngFor="let criterion of criteria" [value]="criterion.type">
+    {{ criterion.name }}
+  </option>
+</select>

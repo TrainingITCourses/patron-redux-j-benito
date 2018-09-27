@@ -1,0 +1,9 @@
+<h3>Selecciona el tipo de criterio</h3>
+
+<app-criterion-types (criterionTypeChange)="onCriterionTypeChange($event)">
+</app-criterion-types>
+
+<app-criterion-results [hidden]="!criterionType"
+                       [criterionResults]="criterionResults$ | async"
+                       (criterionResultChange)="onCriterionResultChange($event)">
+</app-criterion-results>
