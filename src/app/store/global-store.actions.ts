@@ -1,27 +1,17 @@
-export enum GlobalActionTypes {
-  // LoadCriterionTypes = '[Global] LoadCriterionTypes',
-  // LoadCriterionResults = '[Global] LoadCriterionResults',
+import { Criterion, CriterionType } from 'app/models';
 
+export enum GlobalActionTypes {
   LoadAgencies = '[Global] LoadAgencies',
   LoadMissionTypes = '[Global] LoadMissionTypes',
   LoadStatusTypes = '[Global] LoadStatusTypes',
-  LoadLaunches = '[Global] LoadLaunches'
+  LoadLaunches = '[Global] LoadLaunches',
+  LoadCriterion = '[Global] LoadCriterion'
 }
 
 export interface Action {
   readonly type: GlobalActionTypes;
   readonly payload: any;
 }
-
-// export class LoadCriterionTypes implements Action {
-//   public readonly type = GlobalActionTypes.LoadCriterionTypes;
-//   constructor(public readonly payload: any[]) {}
-// }
-
-// export class LoadCriterionResults implements Action {
-//   public readonly type = GlobalActionTypes.LoadCriterionResults;
-//   constructor(public readonly payload: any[]) {}
-// }
 
 export class LoadAgencies implements Action {
   public readonly type = GlobalActionTypes.LoadAgencies;
@@ -43,10 +33,14 @@ export class LoadLaunches implements Action {
   constructor(public readonly payload: any[]) {}
 }
 
+export class LoadCriterion implements Action {
+  public readonly type = GlobalActionTypes.LoadCriterion;
+  constructor(public readonly payload: Criterion) {}
+}
+
 export type GlobalActions =
-  // LoadCriterionTypes |
-  // LoadCriterionResults |
   LoadAgencies |
   LoadMissionTypes |
   LoadStatusTypes |
-  LoadLaunches;
+  LoadLaunches |
+  LoadCriterion;

@@ -9,21 +9,16 @@ import { Global, globalInitialState } from './models/global.model';
 })
 export class GlobalStore {
   private state: Global = { ...globalInitialState };
-  // private criterionTypes$ = new BehaviorSubject<any>(this.state.launchesCriteria.criterionTypes);
-  // private criterionResults$ = new BehaviorSubject<any>(this.state.launchesCriteria.criterionResults);
   private agencies$ = new BehaviorSubject<any>(this.state.agengies);
   private missionTypes$ = new BehaviorSubject<any>(this.state.missionTypes);
   private statusTypes$ = new BehaviorSubject<any>(this.state.statusTypes);
   private launches$ = new BehaviorSubject<any>(this.state.launches);
+  private criterion$ = new BehaviorSubject<any>(this.state.criterion);
 
   constructor() {}
 
   public select$ = (slice: GlobalSlideTypes) => {
     switch (slice) {
-      // case GlobalSlideTypes.criterionTypes:
-      //   return this.criterionTypes$.asObservable();
-      // case GlobalSlideTypes.criterionResults:
-      //   return this.criterionResults$.asObservable();
       case GlobalSlideTypes.Agencies:
         return this.agencies$.asObservable();
       case GlobalSlideTypes.MissionTypes:
@@ -32,15 +27,13 @@ export class GlobalStore {
         return this.statusTypes$.asObservable();
       case GlobalSlideTypes.Launches:
         return this.launches$.asObservable();
+      case GlobalSlideTypes.Criterion:
+        return this.criterion$.asObservable();
     }
   }
 
   public selectSnapShot = (slice: GlobalSlideTypes) => {
     switch (slice) {
-      // case GlobalSlideTypes.criterionTypes:
-      //   return [...this.state.launchesCriteria.criterionTypes];
-      // case GlobalSlideTypes.criterionResults:
-      //   return [...this.state.launchesCriteria.criterionResults];
       case GlobalSlideTypes.Agencies:
         return [...this.state.agengies];
       case GlobalSlideTypes.MissionTypes:
@@ -49,6 +42,8 @@ export class GlobalStore {
         return [...this.state.statusTypes];
       case GlobalSlideTypes.Launches:
         return [...this.state.launches];
+      case GlobalSlideTypes.Criterion:
+        return {...this.state.criterion};
     }
   }
 
@@ -56,12 +51,6 @@ export class GlobalStore {
     console.log('dispatching...', action);
     this.state = globalStoreReducer(this.state, action);
     switch (action.type) {
-      // case GlobalActionTypes.LoadCriterionTypes:
-      //   this.criterionTypes$.next([...this.state.launchesCriteria.criterionTypes]);
-      //   break;
-      // case GlobalActionTypes.LoadCriterionResults:
-      //   this.criterionResults$.next([...this.state.launchesCriteria.criterionResults]);
-      //   break;
       case GlobalActionTypes.LoadAgencies:
         this.agencies$.next([...this.state.agengies]);
         break;
@@ -74,15 +63,17 @@ export class GlobalStore {
       case GlobalActionTypes.LoadLaunches:
         this.launches$.next([...this.state.launches]);
         break;
+      case GlobalActionTypes.LoadCriterion:
+        this.criterion$.next(this.state.criterion ? {...this.state.criterion} : null);
+        break;
     }
   }
 }
 
 export enum GlobalSlideTypes {
-  // criterionTypes = 'criterionTypes',
-  // criterionResults = 'criterionResults',
   Agencies = 'agencies',
   MissionTypes = 'missionTypes',
   StatusTypes = 'statusTypes',
-  Launches = 'launches'
+  Launches = 'launches',
+  Criterion = 'criterion'
 }

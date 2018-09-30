@@ -1,11 +1,11 @@
-import { CriterionType } from 'app/models';
+import { Criterion } from 'app/models';
 
 export interface Global {
     agengies: any[];
     missionTypes: any[];
     statusTypes: any[];
     launches: any[];
-    criterion: CriterionType;
+    criterion: Criterion;
 }
 
 export const globalInitialState: Global = {

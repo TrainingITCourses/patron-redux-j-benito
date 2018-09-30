@@ -37,7 +37,7 @@ export class CriterionTypesComponent implements OnInit {
         name: 'Agencia'
       },
       {
-        type: CriterionTypes.StatusTypes,
+        type: CriterionTypes.MissionTypes,
         name: 'Tipo'
       }
     ];

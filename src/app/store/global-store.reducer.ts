@@ -7,13 +7,6 @@ export function globalStoreReducer(
 ): Global {
   const result = { ...state };
   switch (action.type) {
-    // case GlobalActionTypes.LoadCriterionTypes:
-    // console.log('llega', action.payload)
-    //   result.launches = action.payload;
-    //   break;
-    // case GlobalActionTypes.LoadCriterionTypes:
-    //   result.launchesCriteria.criterionTypes = action.payload;
-    //   break;
     case GlobalActionTypes.LoadAgencies:
       result.agengies = action.payload;
       break;
@@ -25,6 +18,9 @@ export function globalStoreReducer(
       break;
     case GlobalActionTypes.LoadLaunches:
       result.launches = action.payload;
+      break;
+    case GlobalActionTypes.LoadCriterion:
+      result.criterion = action.payload;
       break;
   }
   return result;

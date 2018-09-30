@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Criterion, CriterionType } from 'app/models';
+import { Criterion } from 'app/models';
 import { LaunchesService } from 'app/services';
 
 import { LoadLaunches } from 'app/store/global-store.actions';
@@ -30,9 +30,15 @@ export class LaunchesSearchComponent implements OnInit {
       .subscribe(launches => {
         this.launches = launches;
       });
+
+    this.global
+      .select$(GlobalSlideTypes.Criterion)
+      .subscribe(criterion => {
+        this.launchCriterionChange(criterion);
+      });
   }
 
-  onLaunchCriterionChange(criterion: Criterion) {
+  private launchCriterionChange(criterion: Criterion) {
 
     /* If not criterion, clean list */
     if (!criterion) {

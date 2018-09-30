@@ -1,10 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LaunchesService } from 'app/services';
 import { CriterionType, Criterion, CriterionTypes } from 'app/models';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 
 import { GlobalStore, GlobalSlideTypes } from 'app/store/global-store.state';
-import { LoadAgencies, LoadMissionTypes, LoadStatusTypes } from 'app/store/global-store.actions';
+import { LoadAgencies, LoadMissionTypes, LoadStatusTypes, LoadCriterion } from 'app/store/global-store.actions';
 
 @Component({
   selector: 'app-launches-criteria',
@@ -12,11 +12,9 @@ import { LoadAgencies, LoadMissionTypes, LoadStatusTypes } from 'app/store/globa
   styleUrls: ['./launches-criteria.component.scss']
 })
 export class LaunchesCriteriaComponent implements OnInit {
-  @Output() public launchCriterionChange = new EventEmitter<Criterion>();
-
   public criterionType: CriterionType;
   public isLoaded: boolean;
-  public criterionResults$: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  public criterionResults$: BehaviorSubject<any> = new BehaviorSubject([]);
 
   constructor(private launchesService: LaunchesService,
               private global: GlobalStore) { }
@@ -54,14 +52,16 @@ export class LaunchesCriteriaComponent implements OnInit {
         this.criterionResults$.next(statusTypes);
         break;
     }
-    this.launchCriterionChange.emit();
+    this.global.dispatch(new LoadCriterion(null));
   }
 
   onCriterionResultChange(criterionResultId: string) {
-    this.launchCriterionChange.emit({
-      type: this.criterionType,
-      id: Number(criterionResultId)
-    });
+    this.global.dispatch(
+      new LoadCriterion({
+        type: this.criterionType,
+        id: Number(criterionResultId)
+      } as Criterion)
+    );
   }
 
 }
