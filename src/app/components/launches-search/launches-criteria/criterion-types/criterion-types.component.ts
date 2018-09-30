@@ -2,7 +2,7 @@ import { Component,
          OnInit,
          Output,
          EventEmitter } from '@angular/core';
-import { CriterionType } from 'app/models';
+import { CriterionType, CriterionTypes } from 'app/models';
 
 class CriterionName {
   type: CriterionType;
@@ -29,15 +29,15 @@ export class CriterionTypesComponent implements OnInit {
   private initCriteria(): CriterionName[] {
     return [
       {
-        type: 'status',
+        type: CriterionTypes.StatusTypes,
         name: 'Estado'
       },
       {
-        type: 'agencies',
+        type: CriterionTypes.Agencies,
         name: 'Agencia'
       },
       {
-        type: 'types',
+        type: CriterionTypes.StatusTypes,
         name: 'Tipo'
       }
     ];

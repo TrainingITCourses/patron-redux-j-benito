@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Criterion } from 'app/models';
+import { Criterion, CriterionType } from 'app/models';
 import { LaunchesService } from 'app/services';
 // import { BehaviorSubject } from 'rxjs';
+
+import { LoadLaunches } from 'app/store/global-store.actions';
+import { GlobalStore, GlobalSlideTypes } from 'app/store/global-store.state';
+import { CriterionTypes } from 'app/models';
 
 @Component({
   selector: 'app-launches-search',
@@ -13,12 +17,21 @@ export class LaunchesSearchComponent implements OnInit {
   public filteredLaunches: any[] = [];
   // public filteredLaunches$: BehaviorSubject<any[]> = new BehaviorSubject(this.filteredLaunches);
 
-  constructor(private launchesService: LaunchesService) { }
+  constructor(private launchesService: LaunchesService,
+              private global: GlobalStore) { }
 
   ngOnInit() {
-    this.launchesService.getLaunches().subscribe((launches) => {
-      this.launches = launches;
+    this.launchesService
+      .getLaunches()
+      .subscribe((launches) => {
+        this.global.dispatch(new LoadLaunches(launches));
     });
+
+    this.global
+      .select$(GlobalSlideTypes.Launches)
+      .subscribe(launches => {
+        this.launches = launches;
+      });
   }
 
   onLaunchCriterionChange(criterion: Criterion) {
@@ -29,31 +42,35 @@ export class LaunchesSearchComponent implements OnInit {
       return;
     }
 
-    /* Filter by status */
-    if (criterion.type === 'status') {
-      this.filteredLaunches = this.launches.filter(
-        launch => launch.status === criterion.id
-      );
+    switch (criterion.type) {
 
-    /* Filter by agencies */
-    } else if (criterion.type === 'agencies') {
-      this.filteredLaunches = this.launches.filter(
-        launch => (
-          (launch.rocket.agencies ? launch.rocket.agencies.some(agency => agency.id === criterion.id) : false) ||
-          (launch.missions ? launch.missions.some(mission => (
-            mission.agencies ? mission.agencies.some(agency => agency.id === criterion.id) : false)) : false) ||
-          (launch.location.pads ? launch.location.pads.some(pad => (
-            pad.agencies ? pad.agencies.some(agency => agency.id === criterion.id) : false)) : false)
-        )
-      );
+      /* Filter by status types */
+      case CriterionTypes.StatusTypes:
+        this.filteredLaunches = this.launches.filter(
+          launch => launch.status === criterion.id
+        );
+        break;
 
-    /* Filter by types */
-    } else if (criterion.type === 'types') {
-      this.filteredLaunches = this.launches.filter(
-        launch => launch.missions.some(mission => mission.type === criterion.id)
-      );
+      /* Filter by agencies */
+      case CriterionTypes.Agencies:
+        this.filteredLaunches = this.launches.filter(
+          launch => (
+            (launch.rocket.agencies ? launch.rocket.agencies.some(agency => agency.id === criterion.id) : false) ||
+            (launch.missions ? launch.missions.some(mission => (
+              mission.agencies ? mission.agencies.some(agency => agency.id === criterion.id) : false)) : false) ||
+            (launch.location.pads ? launch.location.pads.some(pad => (
+              pad.agencies ? pad.agencies.some(agency => agency.id === criterion.id) : false)) : false)
+          )
+        );
+        break;
+
+      /* Filter by mission types */
+      case CriterionTypes.MissionTypes:
+        this.filteredLaunches = this.launches.filter(
+          launch => launch.missions.some(mission => mission.type === criterion.id)
+        );
+        break;
     }
-
     // this.filteredLaunches$.next(this.filteredLaunches);
   }
 }
