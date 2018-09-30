@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { LaunchesService } from 'app/services';
-import { CriterionType, IdValueType, Criterion, CriterionTypes } from 'app/models';
+import { CriterionType, Criterion, CriterionTypes } from 'app/models';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 
 import { GlobalStore, GlobalSlideTypes } from 'app/store/global-store.state';
@@ -16,8 +16,7 @@ export class LaunchesCriteriaComponent implements OnInit {
 
   public criterionType: CriterionType;
   public isLoaded: boolean;
-  // public criterionResults: IdValueType[] = [];
-  public criterionResults$: BehaviorSubject<IdValueType[]> = new BehaviorSubject([]);
+  public criterionResults$: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
   constructor(private launchesService: LaunchesService,
               private global: GlobalStore) { }
@@ -42,33 +41,20 @@ export class LaunchesCriteriaComponent implements OnInit {
     switch (criterionType) {
       case CriterionTypes.Agencies:
         const agencies = this.global.selectSnapShot(GlobalSlideTypes.Agencies);
-        this.assignCriterionResults(agencies);
+        this.criterionResults$.next(agencies);
         break;
 
       case CriterionTypes.MissionTypes:
-        this.launchesService.getMissionTypes().subscribe((missionTypes) => {
-          this.assignCriterionResults(missionTypes);
-        });
+        const missionTypes = this.global.selectSnapShot(GlobalSlideTypes.MissionTypes);
+        this.criterionResults$.next(missionTypes);
         break;
 
       case CriterionTypes.StatusTypes:
-        this.launchesService.getStatusTypes().subscribe((statusTypes) => {
-          this.assignCriterionResults(statusTypes);
-        });
+        const statusTypes = this.global.selectSnapShot(GlobalSlideTypes.StatusTypes);
+        this.criterionResults$.next(statusTypes);
         break;
     }
     this.launchCriterionChange.emit();
-  }
-
-  private assignCriterionResults(results: any[]): void {
-    const criterionResults = [];
-    results.forEach((elem) => {
-      criterionResults.push({
-        id: elem.id,
-        value: elem.name
-      });
-    });
-    this.criterionResults$.next(criterionResults);
   }
 
   onCriterionResultChange(criterionResultId: string) {

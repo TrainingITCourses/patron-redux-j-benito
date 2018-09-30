@@ -4,7 +4,6 @@ import { Component,
          Output,
          EventEmitter,
          OnChanges} from '@angular/core';
-import { IdValueType } from 'app/models';
 
 @Component({
   selector: 'app-criterion-results',
@@ -12,7 +11,7 @@ import { IdValueType } from 'app/models';
   styleUrls: ['./criterion-results.component.scss']
 })
 export class CriterionResultsComponent implements OnChanges {
-  @Input() public criterionResults: IdValueType[];
+  @Input() public criterionResults: any[];
   @Output() public criterionResultChange = new EventEmitter<string>();
   public selectValue: string;
 

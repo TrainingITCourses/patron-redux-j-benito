@@ -2,6 +2,6 @@
         [(ngModel)]="selectValue">
   <option value="" disabled selected hidden>Selecciona...</option>
   <option *ngFor="let result of criterionResults" [value]="result.id">
-    {{ result.value }}
+    {{ result.name }}
   </option>
 </select>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Criterion, CriterionType } from 'app/models';
 import { LaunchesService } from 'app/services';
-// import { BehaviorSubject } from 'rxjs';
 
 import { LoadLaunches } from 'app/store/global-store.actions';
 import { GlobalStore, GlobalSlideTypes } from 'app/store/global-store.state';
@@ -15,7 +14,6 @@ import { CriterionTypes } from 'app/models';
 export class LaunchesSearchComponent implements OnInit {
   private launches: any[];
   public filteredLaunches: any[] = [];
-  // public filteredLaunches$: BehaviorSubject<any[]> = new BehaviorSubject(this.filteredLaunches);
 
   constructor(private launchesService: LaunchesService,
               private global: GlobalStore) { }
@@ -71,6 +69,5 @@ export class LaunchesSearchComponent implements OnInit {
         );
         break;
     }
-    // this.filteredLaunches$.next(this.filteredLaunches);
   }
 }
